@@ -4,6 +4,10 @@ from rest_framework.response import Response
 from decouple import config
 import requests
 from pprint import pprint
+from rest_framework import viewsets
+from rest_framework.generics import ListCreateAPIView
+from rest_framework.views import APIView
+from .serializers import GetWeatherSerializer
 
 
 @api_view(['GET'])
@@ -14,8 +18,6 @@ def get_weather(request):
     url = f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_key}&units=metric'
     response = requests.get(url)
     informations = response.json()
-
-    pprint(informations)
 
     if response.status_code == 200:
         return Response({
@@ -28,3 +30,11 @@ def get_weather(request):
         return Response({
             'Something is Wrong'
         })
+    
+
+
+    
+
+        
+
+            
