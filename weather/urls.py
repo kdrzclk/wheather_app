@@ -3,6 +3,6 @@ from .views import GetWeather
 
 urlpatterns = [
      # path('weather/', get_weather),
-     path('weatherclass/', GetWeather.as_view()),
+     path('weather/', GetWeather.as_view()),
     
 ]
