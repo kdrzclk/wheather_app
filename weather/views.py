@@ -5,6 +5,8 @@ from decouple import config
 import requests
 from rest_framework.views import APIView
 from .serializers import GetWeatherSerializer
+from drf_yasg.utils import swagger_auto_schema
+
 
 
 # @api_view(['GET'])
@@ -31,7 +33,12 @@ from .serializers import GetWeatherSerializer
 
 class GetWeather(APIView):
 
-    def get(self, request):
+    @swagger_auto_schema(
+        request_body=GetWeatherSerializer,
+        responses={200: GetWeatherSerializer}
+    )
+
+    def post(self, request):
 
         API_key = config('API_KEY')
         city = request.GET.get('city')
