@@ -18,6 +18,10 @@ class GetWeather(APIView):
 
             API_key = config('API_KEY')
             city = request.GET.get('city')
+
+            if city == "":
+                return Response({"error": 'Please enter a city name'})
+
             
             url = f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_key}&units=metric'
             response = requests.get(url)
