@@ -23,6 +23,11 @@ class GetWeatherTest(TestCase):
         response = self.client.get(url, {'city': city})
 
         self.assertEqual(response.status_code, 404)
+
+
+        
+
+
         
 
 

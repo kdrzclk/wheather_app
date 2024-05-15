@@ -7,3 +7,6 @@ class GetWeatherSerializer(serializers.Serializer):
     tempreature = serializers.IntegerField()
     description = serializers.CharField(max_length=100)
 
+
+
+

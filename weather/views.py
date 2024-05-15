@@ -40,7 +40,7 @@ class GetWeather(APIView):
            
             else:
                 logger.error(f"Failed to fetch weather data for {city}. Status code: {response.status_code}")
-                return Response(f"Failed to fetch weather data for {city}.", status=response.status_code)
+                return Response({"error": f"Failed to fetch weather data for {city}."}, status=response.status_code)
             
             
     
