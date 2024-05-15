@@ -22,7 +22,6 @@ class GetWeatherTest(TestCase):
         url = reverse('get_weather')
         response = self.client.get(url, {'city': city})
 
-        # Check response status code
         self.assertEqual(response.status_code, 404)
         
 
