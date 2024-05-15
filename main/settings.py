@@ -155,14 +155,15 @@ LOGGING = {
         "console": {
             "class": "logging.StreamHandler",
             "formatter": "standard",
-            "level": "INFO",
+            "level": "INFO", 
             "stream": "ext://sys.stdout",
         },
+
         'file': {
             'class': 'logging.FileHandler',
             "formatter": "verbose",
             'filename': './debug.log',
-            'level': 'WARNING',
+            'level': 'INFO', 
         },
     },
     # A logger is the entry point into the logging system.
@@ -175,5 +176,6 @@ LOGGING = {
             # If False, this means that log messages written to django.request
             # will not be handled by the django logger.
         },
+
     },
 }
