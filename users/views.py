@@ -72,7 +72,6 @@ def reset_password(request):
     if User.objects.filter(email=email).exists():
         user = User.objects.get(email=email)
         password = User.objects.make_random_password()
-        print(password)
         user.set_password(password)
         user.save()
         send_mail(
