@@ -106,15 +106,9 @@ class RegisterSerializer(serializers.ModelSerializer):
         user.set_password(password)
         user.save()
         return user
-    
 
-class CustomTokenSerializer(AuthTokenSerializer):
-    user = UserSerializer(read_only=True)
+class ChangePasswordSerializer(serializers.Serializer):
 
-    class Meta:
-
-        fields = (
-            "user",
-            "token"
-        )
+    old_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)
 
