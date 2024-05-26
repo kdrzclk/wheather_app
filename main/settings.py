@@ -42,9 +42,12 @@ INSTALLED_APPS = [
     # third party apps
     'rest_framework',
     'drf_yasg',
+    'rest_framework.authtoken',
+
 
     # my apps
     'weather',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -179,3 +182,13 @@ LOGGING = {
 
     },
 }
+
+AUTH_USER_MODEL = 'users.User'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ]
+
+}
+

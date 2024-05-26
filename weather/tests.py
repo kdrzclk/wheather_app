@@ -24,7 +24,7 @@ class GetWeatherTest(TestCase):
 
         self.assertEqual(response.status_code, 404)
 
-
+# assert
         
 
 
