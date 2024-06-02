@@ -4,8 +4,9 @@ from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAdminUser, IsAuthenticatedOrReadOnly, IsAuthenticated
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.decorators import api_view
+from rest_framework.exceptions import PermissionDenied
 from django.core.mail import send_mail
 from .serializers import (
     UserSerializer, 
@@ -13,6 +14,7 @@ from .serializers import (
     RegisterSerializer, 
     ChangePasswordSerializer
 )
+from .permissions import IsAdminOrIsSelf
 
 
 class UserView(generics.ListCreateAPIView):
@@ -23,7 +25,14 @@ class UserView(generics.ListCreateAPIView):
 class UserViewRUD(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = UserUpdateSerializer
     queryset = User.objects.all()
-    permission_classes = (IsAdminUser,)
+    permission_classes = [IsAuthenticated, IsAdminOrIsSelf]
+
+    def get_object(self):
+        obj = super().get_object()
+        if self.request.user.is_staff or obj == self.request.user:
+            return obj
+        else:
+            raise PermissionDenied("You do not have permission to perform this action.")
 
 class CustomAuthToken(ObtainAuthToken):
 
@@ -58,12 +67,19 @@ class RegisterView(generics.CreateAPIView):
         return Response(data, status=status.HTTP_201_CREATED, headers=headers)
     
 class LogoutView(APIView):
-    def post(self, request):
-        request.user.auth_token.delete()
-        data = {
+    def get(self, request):
+        user = request.user
+        if user.is_authenticated:
+            user.auth_token.delete()
+            data = {
             "message" : "Successfully logged out..."
         }
-        return Response(data, status=status.HTTP_200_OK)
+            return Response(data, status=status.HTTP_200_OK)
+        else:
+            data = {
+                "message": "No active session found."
+            }
+            return Response(data, status=status.HTTP_401_UNAUTHORIZED)
     
 @api_view(['POST'])
 def reset_password(request):
@@ -102,10 +118,9 @@ class ChangePasswordView(generics.UpdateAPIView):
         serializer = self.get_serializer(data=request.data)
 
         if serializer.is_valid():
-            # Check old password
             if not self.object.check_password(serializer.data.get("old_password")):
                 return Response({"old_password": "Wrong password."}, status=status.HTTP_400_BAD_REQUEST)
-            # set_password also hashes the password that the user will get
+
             self.object.set_password(serializer.data.get("new_password"))
             self.object.save()
             request.user.auth_token.delete()

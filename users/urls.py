@@ -10,8 +10,8 @@ from .views import (
 )
 
 urlpatterns = [
-    path('users/', UserView.as_view()),
-    path('user/<int:pk>/', UserViewRUD.as_view()),
+    path('users/', UserView.as_view(), name="users"),
+    path('user/<int:pk>/', UserViewRUD.as_view(), name="userdetail"),
     path('addnewuser/', RegisterView.as_view(), name="addnewuser"),
     path('login/', CustomAuthToken.as_view(), name="login"),
     path('logout/', LogoutView.as_view(), name="logout"),

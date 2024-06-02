@@ -59,8 +59,6 @@ class UserUpdateSerializer(serializers.ModelSerializer):
             "email",
             "first_name",
             "last_name",
-            "is_active",
-            "is_staff"
         )
 
 class RegisterSerializer(serializers.ModelSerializer):
